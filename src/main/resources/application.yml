@@ -1,0 +1,8 @@
+server:
+  port: 9000
+
+spring:
+  data:
+    mongodb:
+      database: habitly
+      port: 27017

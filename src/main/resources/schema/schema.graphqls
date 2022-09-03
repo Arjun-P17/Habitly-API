@@ -1,0 +1,16 @@
+type Query {
+    drinks: [DrinkEvent]
+}
+
+type Mutation {
+    drink(date: Long!, type: String!, amount: Int!): DrinkEvent
+}
+
+type DrinkEvent {
+    id: String
+    date: Long
+    type: String
+    amount: Int
+}
+
+scalar Long
