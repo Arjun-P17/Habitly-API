@@ -2,6 +2,7 @@ package com.juice.habitly.graphql.mutation
 
 import com.juice.habitly.entity.DrinkEvent
 import com.juice.habitly.repository.DrinkEventRepository
+import com.netflix.dgs.codegen.generated.types.DrinkEventInput
 import com.netflix.graphql.dgs.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -16,13 +17,13 @@ class DrinkEventMutation() {
     private lateinit var drinkEventRepository: DrinkEventRepository
 
     @DgsMutation
-    fun drink(date: Long,  type: String, amount: Number): DrinkEvent {
-        logger.info(type)
+    fun drink(input: DrinkEventInput): DrinkEvent {
+        logger.info(input.type.toString())
 
         return drinkEventRepository.save(DrinkEvent(
-            date = date,
-            type = type,
-            amount = amount
+            date = input.date,
+            type = input.type,
+            amount = input.amount
         ))
     }
 

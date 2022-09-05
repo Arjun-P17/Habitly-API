@@ -1,16 +1,117 @@
 type Query {
     drinks: [DrinkEvent]
+    workouts(input: PageInfoInput): WorkoutsResponse
+    workout(id: String): Workout
+    workoutHistory(input: PageInfoInput): WorkoutHistoryResponse
+    workoutEvent(id: String): WorkoutEvent
 }
 
 type Mutation {
-    drink(date: Long!, type: String!, amount: Int!): DrinkEvent
+    drink(input: DrinkEventInput!): DrinkEvent
+
+    addWorkout(input: addWorkoutInput): Workout
+    updateWorkout(input: updateWorkoutInput): Workout
+    removeWorkout(workoutId: String): Boolean
+
+    addWorkoutEvent(input: addWorkoutEventInput): WorkoutEvent
+    updateWorkoutEvent(input: updateWorkoutEventInput): WorkoutEvent
+    removeWorkoutEvent(workoutEventId: String): Boolean
 }
 
 type DrinkEvent {
     id: String
     date: Long
-    type: String
+    type: DrinkType
     amount: Int
+}
+
+input DrinkEventInput {
+    date: Long!
+    type: DrinkType!
+    amount: Int!
+}
+
+enum DrinkType {
+    WATER
+    TEA
+    COFFEE
+    JUICE
+    SOFT_DRINK
+    MILK
+    OTHER
+}
+
+type Workout {
+    id: String
+    name: String
+    type: WorkoutType
+    duration: Int
+    exercises: [Exercise]
+}
+
+enum WorkoutType {
+    CARDIO
+    WEIGHTS
+}
+
+type Exercise {
+    id: String
+    name: String
+    sets: Int
+    reps: Int
+}
+
+type WorkoutEvent {
+    id: String
+    start: Long
+    end: Long
+    workout: Workout
+}
+
+input addWorkoutInput {
+    name: String!
+    type: WorkoutType!
+    duration: Int!
+}
+
+input updateWorkoutInput {
+    id: String!
+    name: String
+    type: WorkoutType
+    duration: Int
+}
+
+input addWorkoutEventInput {
+    workoutId: String!
+    date: Long!
+}
+
+input updateWorkoutEventInput {
+    id: String!
+    workoutId: String
+    date: Long
+}
+
+input PageInfoInput {
+    offset: Int
+    pageSize: Int
+}
+
+type PageInfo {
+    offset: Int
+    pageSize: Int
+    hasMore: Int
+    totalCount: Int
+}
+
+type WorkoutsResponse {
+    workouts: [Workout]
+    pageInfo: PageInfo
+}
+
+type WorkoutHistoryResponse {
+    workoutHistory: [WorkoutEvent]
+    pageInfo: PageInfo
 }
 
 scalar Long
