@@ -11,18 +11,18 @@ type Mutation {
 
     addWorkout(input: addWorkoutInput): Workout
     updateWorkout(input: updateWorkoutInput): Workout
-    removeWorkout(workoutId: String): Boolean
+    removeWorkout(workoutId: String!): Boolean
 
     addWorkoutEvent(input: addWorkoutEventInput): WorkoutEvent
     updateWorkoutEvent(input: updateWorkoutEventInput): WorkoutEvent
-    removeWorkoutEvent(workoutEventId: String): Boolean
+    removeWorkoutEvent(workoutEventId: String!): Boolean
 }
 
 type DrinkEvent {
-    id: String
-    date: Long
-    type: DrinkType
-    amount: Int
+    id: String!
+    date: Long!
+    type: DrinkType!
+    amount: Int!
 }
 
 input DrinkEventInput {
@@ -42,11 +42,11 @@ enum DrinkType {
 }
 
 type Workout {
-    id: String
-    name: String
-    type: WorkoutType
-    duration: Int
-    exercises: [Exercise]
+    id: String!
+    name: String!
+    type: WorkoutType!
+    duration: Int!
+    exercises: [Exercise]!
 }
 
 enum WorkoutType {
@@ -55,23 +55,23 @@ enum WorkoutType {
 }
 
 type Exercise {
-    id: String
-    name: String
-    sets: Int
-    reps: Int
+    name: String!
+    sets: Int!
+    reps: Int!
 }
 
 type WorkoutEvent {
-    id: String
-    start: Long
-    end: Long
-    workout: Workout
+    id: String!
+    start: Long!
+    end: Long!
+    workout: Workout!
 }
 
 input addWorkoutInput {
     name: String!
     type: WorkoutType!
     duration: Int!
+    exercises: [Exercise!]!
 }
 
 input updateWorkoutInput {
@@ -79,6 +79,7 @@ input updateWorkoutInput {
     name: String
     type: WorkoutType
     duration: Int
+    exercises: [Exercise!]
 }
 
 input addWorkoutEventInput {
@@ -105,12 +106,12 @@ type PageInfo {
 }
 
 type WorkoutsResponse {
-    workouts: [Workout]
+    workouts: [Workout!]
     pageInfo: PageInfo
 }
 
 type WorkoutHistoryResponse {
-    workoutHistory: [WorkoutEvent]
+    workoutHistory: [WorkoutEvent!]
     pageInfo: PageInfo
 }
 
