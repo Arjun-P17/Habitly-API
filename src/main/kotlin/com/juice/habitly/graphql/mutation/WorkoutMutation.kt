@@ -32,7 +32,6 @@ class WorkoutMutation() {
                     sets = it.sets,
                     reps = it.reps
                 )
-
             }
         ))
     }
@@ -57,8 +56,14 @@ class WorkoutMutation() {
                 name = input.name ?: it.name,
                 type = input.type ?: it.type,
                 duration = input.duration ?: it.duration,
-                // fix casting below
-                exercises = (input.exercises ?: it.exercises) as List<Exercise>
+                exercises = input.exercises?.map { exercise ->
+                        Exercise(
+                            name = exercise.name,
+                            sets = exercise.sets,
+                            reps = exercise.reps
+                        )
+                    }
+                 ?: it.exercises
             ))
         }.orElse(null)
     }
