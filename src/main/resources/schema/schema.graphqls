@@ -60,6 +60,12 @@ type Exercise {
     reps: Int!
 }
 
+input ExerciseInput {
+    name: String!
+    sets: Int!
+    reps: Int!
+}
+
 type WorkoutEvent {
     id: String!
     start: Long!
@@ -71,7 +77,7 @@ input addWorkoutInput {
     name: String!
     type: WorkoutType!
     duration: Int!
-    exercises: [Exercise!]!
+    exercises: [ExerciseInput!]!
 }
 
 input updateWorkoutInput {
@@ -79,7 +85,7 @@ input updateWorkoutInput {
     name: String
     type: WorkoutType
     duration: Int
-    exercises: [Exercise!]
+    exercises: [ExerciseInput!]
 }
 
 input addWorkoutEventInput {
@@ -107,12 +113,10 @@ type PageInfo {
 
 type WorkoutsResponse {
     workouts: [Workout!]
-    pageInfo: PageInfo
 }
 
 type WorkoutHistoryResponse {
     workoutHistory: [WorkoutEvent!]
-    pageInfo: PageInfo
 }
 
 scalar Long

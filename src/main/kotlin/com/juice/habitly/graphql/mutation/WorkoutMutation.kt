@@ -1,8 +1,8 @@
 package com.juice.habitly.graphql.mutation
 
-import com.juice.habitly.entity.Exercise
 import com.juice.habitly.entity.Workout
 import com.juice.habitly.repository.workoutRepository.WorkoutRepository
+import com.netflix.dgs.codegen.generated.types.Exercise
 import com.netflix.dgs.codegen.generated.types.addWorkoutInput
 import com.netflix.dgs.codegen.generated.types.updateWorkoutInput
 import com.netflix.graphql.dgs.*
@@ -48,7 +48,7 @@ class WorkoutMutation() {
     }
 
     @DgsMutation
-    fun updateWorkout(input: updateWorkoutInput): Boolean {
+    fun updateWorkout(input: updateWorkoutInput): Workout {
         logger.info("Updating workout ${input.name}")
 
         return workoutRepository.findById(input.id).map {
@@ -57,8 +57,9 @@ class WorkoutMutation() {
                 name = input.name ?: it.name,
                 type = input.type ?: it.type,
                 duration = input.duration ?: it.duration,
+                // fix casting below
                 exercises = (input.exercises ?: it.exercises) as List<Exercise>
             ))
-        }.isPresent
+        }.orElse(null)
     }
 }

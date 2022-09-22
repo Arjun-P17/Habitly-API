@@ -1,5 +1,6 @@
 package com.juice.habitly.entity
 
+import com.netflix.dgs.codegen.generated.types.Exercise
 import com.netflix.dgs.codegen.generated.types.WorkoutType
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
@@ -14,10 +15,3 @@ data class Workout(
     val duration: Number,
     val exercises: List<Exercise>
 )
-
-data class Exercise(
-    val name: String,
-    val sets: Number,
-    val reps: Number
-)
-
