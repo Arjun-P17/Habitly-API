@@ -1,10 +1,12 @@
 package com.juice.habitly.graphql.mutation
 
 import com.juice.habitly.entity.Workout
+import com.juice.habitly.entity.toDgsWorkout
 import com.juice.habitly.repository.workoutRepository.WorkoutRepository
 import com.netflix.dgs.codegen.generated.types.Exercise
 import com.netflix.dgs.codegen.generated.types.addWorkoutInput
 import com.netflix.dgs.codegen.generated.types.updateWorkoutInput
+import com.netflix.dgs.codegen.generated.types.Workout as DgsWorkout
 import com.netflix.graphql.dgs.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -19,7 +21,7 @@ class WorkoutMutation() {
     private lateinit var workoutRepository: WorkoutRepository
 
     @DgsMutation
-    fun addWorkout(input: addWorkoutInput): Workout {
+    fun addWorkout(input: addWorkoutInput): DgsWorkout {
         logger.info("Adding new workout ${input.name}")
 
         return workoutRepository.save(Workout(
@@ -33,7 +35,7 @@ class WorkoutMutation() {
                     reps = it.reps
                 )
             }
-        ))
+        )).toDgsWorkout()
     }
 
     @DgsMutation
@@ -47,7 +49,7 @@ class WorkoutMutation() {
     }
 
     @DgsMutation
-    fun updateWorkout(input: updateWorkoutInput): Workout {
+    fun updateWorkout(input: updateWorkoutInput): DgsWorkout {
         logger.info("Updating workout ${input.name}")
 
         return workoutRepository.findById(input.id).map {
@@ -64,7 +66,7 @@ class WorkoutMutation() {
                         )
                     }
                  ?: it.exercises
-            ))
+            ) ).toDgsWorkout()
         }.orElse(null)
     }
 }
