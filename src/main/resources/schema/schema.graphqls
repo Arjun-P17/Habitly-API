@@ -90,13 +90,15 @@ input updateWorkoutInput {
 
 input addWorkoutEventInput {
     workoutId: String!
-    date: Long!
+    start: Long!
+    end: Long!
 }
 
 input updateWorkoutEventInput {
     id: String!
     workoutId: String
-    date: Long
+    start: Long
+    end: Long
 }
 
 input PageInfoInput {
