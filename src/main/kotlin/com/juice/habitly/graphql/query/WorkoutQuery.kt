@@ -3,6 +3,7 @@ package com.juice.habitly.graphql.query
 import com.juice.habitly.entity.Workout
 import com.juice.habitly.entity.toDgsWorkout
 import com.juice.habitly.repository.workoutRepository.WorkoutRepository
+import com.netflix.dgs.codegen.generated.types.PageInfoInput
 import com.netflix.dgs.codegen.generated.types.WorkoutsResponse
 import com.netflix.graphql.dgs.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,8 +16,9 @@ class WorkoutQuery {
     @Autowired
     private lateinit var workoutRepository: WorkoutRepository
 
+    // Ignores input parameters for now
     @DgsQuery
-    fun workouts(): WorkoutsResponse {
+    fun workouts(input: PageInfoInput): WorkoutsResponse {
         val workouts = workoutRepository.findAll()
         return WorkoutsResponse(
             workouts = workouts.map {
