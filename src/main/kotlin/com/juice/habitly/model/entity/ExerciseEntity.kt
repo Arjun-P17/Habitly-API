@@ -1,5 +1,7 @@
 package com.juice.habitly.model.entity
 
+import com.juice.habitly.model.ExerciseType
+import com.juice.habitly.model.MuscleGroup
 import java.util.*
 import javax.persistence.*
 
@@ -10,6 +12,8 @@ data class ExerciseEntity(
     val id: UUID = UUID.randomUUID(),
     val name: String,
     val description: String?,
-    val reps: Int,
-    val sets: Int
+    @Enumerated(EnumType.STRING)
+    val muscleGroup: MuscleGroup,
+    @Enumerated(EnumType.STRING)
+    val type: ExerciseType
 )

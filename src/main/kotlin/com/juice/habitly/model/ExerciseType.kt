@@ -1,7 +1,7 @@
 package com.juice.habitly.model
 
-enum class WorkoutType {
+enum class ExerciseType {
     CARDIO,
-    WEIGHTS,
+    STRENGTH,
     STRETCH,
 }

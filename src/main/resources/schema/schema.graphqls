@@ -4,77 +4,114 @@ scalar Instant
 
 
 type Query {
-    workouts(input: PageInfoInput): WorkoutsResponse
-    workout(id: UUID): Workout
     workoutHistory(input: PageInfoInput): WorkoutHistoryResponse
     workoutEvent(id: UUID): WorkoutEvent
+    workouts(input: PageInfoInput): WorkoutsResponse
+    workout(id: UUID): Workout
+    workoutExercises(input: PageInfoInput): WorkoutExercisesResponse
+    workoutExercise(id: UUID): WorkoutExercise
     exercises(input: PageInfoInput): ExercisesResponse
     exercise(id: UUID): Exercise
 }
 
 type Mutation {
-    upsertWorkout(input: WorkoutInput): Workout
-    removeWorkout(workoutId: String!): Boolean
-
     upsertWorkoutEvent(input: WorkoutEventInput): WorkoutEvent
     removeWorkoutEvent(workoutEventId: String!): Boolean
 
+    upsertWorkout(input: WorkoutInput): Workout
+    removeWorkout(workoutId: String!): Boolean
+
+    upsertWorkoutExercise(input: WorkoutExerciseInput): WorkoutExercise
+    removeWorkoutExercise(workoutExerciseId: String!): Boolean
+
     upsertExercise(input: ExerciseInput): Exercise
     removeExercise(exerciseId: String!): Boolean
+}
+
+type WorkoutEvent {
+    id: UUID!
+    start: Instant!
+    duration: Long!
+    workout: Workout!
 }
 
 type Workout {
     id: UUID!
     name: String!
     description: String
-    type: WorkoutType!
-    duration: Long!
-    exercises: [Exercise!]!
+    exercises: [WorkoutExercise!]!
 }
 
-enum WorkoutType {
-    CARDIO
-    WEIGHTS
-    STRETCH
+type WorkoutExercise {
+    id: UUID!
+    workoutId: UUID!
+    exercise: Exercise!
+    sets: Int
+    reps: Int
+    weight: Int
+    distance: Int
 }
 
 type Exercise {
     id: UUID!
     name: String!
     description: String
-    sets: Int!
-    reps: Int!
+    muscleGroup: MuscleGroup!
+    type: ExerciseType!
 }
 
-input ExerciseInput {
+enum ExerciseType {
+    CARDIO,
+    STRENGTH,
+    STRETCH,
+}
+
+enum MuscleGroup {
+    CHEST,
+    SHOULDERS,
+    TRAPEZIUS,
+    DELTOIDS,
+    LATS,
+    BICEPS,
+    TRICEPS,
+    FOREARMS,
+    HAMSTRINGS,
+    QUADRICEPS,
+    CALVES,
+    GLUTES,
+    ABS,
+}
+
+input WorkoutEventInput {
     id: UUID
-    name: String!
-    description: String
-    sets: Int!
-    reps: Int!
-}
-
-type WorkoutEvent {
-    id: UUID!
     start: Instant!
-    end: Instant!
-    workout: Workout!
+    duration: Long!
+    workoutId: UUID!
 }
 
 input WorkoutInput {
     id: UUID
     name: String!
     description: String
-    type: WorkoutType!
-    duration: Long!
     exercises: [UUID!]
 }
 
-input WorkoutEventInput {
+input WorkoutExerciseInput {
     id: UUID
     workoutId: UUID!
-    start: Long!
-    end: Long!
+    exerciseId: UUID!
+    sets: Int
+    reps: Int
+    weight: Int
+    distance: Int
+}
+
+input ExerciseInput {
+    id: UUID
+    name: String!
+    description: String
+    muscleGroup: MuscleGroup!
+    type: ExerciseType!
 }
 
 input PageInfoInput {
@@ -89,12 +126,16 @@ type PageInfo {
     totalCount: Int
 }
 
+type WorkoutHistoryResponse {
+    workoutHistory: [WorkoutEvent!]!
+}
+
 type WorkoutsResponse {
     workouts: [Workout!]!
 }
 
-type WorkoutHistoryResponse {
-    workoutHistory: [WorkoutEvent!]!
+type WorkoutExercisesResponse {
+    workoutExercises: [WorkoutExercise!]!
 }
 
 type ExercisesResponse {

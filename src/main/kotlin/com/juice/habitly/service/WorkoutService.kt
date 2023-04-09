@@ -1,33 +1,47 @@
 package com.juice.habitly.service
 
-import com.juice.habitly.mappers.toEntity
 import com.juice.habitly.model.entity.WorkoutEntity
-import com.juice.habitly.repository.ExerciseRepository
+import com.juice.habitly.repository.WorkoutExerciseRepository
 import com.juice.habitly.repository.WorkoutRepository
-import com.juice.habitly.repository.findByIdOrNull
 import com.netflix.dgs.codegen.generated.types.WorkoutInput
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class WorkoutService(
     private val workoutRepository: WorkoutRepository,
-    private val exerciseRepository: ExerciseRepository,
+    private val workoutExerciseRepository: WorkoutExerciseRepository,
 ) {
 
-    fun upsertWorkout(input: WorkoutInput) {
-        workoutRepository.save(input.toEntity())
+    fun existsById(id: UUID) : Boolean {
+        return workoutRepository.existsById(id)
     }
 
+    fun findAll() : List<WorkoutEntity> {
+        return workoutRepository.findAll()
+    }
+
+    fun deleteById(id: UUID) {
+        workoutRepository.deleteById(id)
+    }
+
+    fun findByIdOrNull(id: UUID) : WorkoutEntity? {
+        return workoutRepository.findByIdOrNull(id)
+    }
+
+    fun upsertWorkout(input: WorkoutInput) : WorkoutEntity {
+        return workoutRepository.save(input.toEntity())
+    }
+
+    // Should be creating the WorkoutExercise here as well, i think
     private fun WorkoutInput.toEntity() : WorkoutEntity {
         return WorkoutEntity(
             id = this.id ?: UUID.randomUUID(),
             name = this.name,
             description = this.description,
-            type = this.type.toEntity(),
-            duration = this.duration,
             exercises = this.exercises?.mapNotNull {
-                exerciseRepository.findByIdOrNull(it)
+                workoutExerciseRepository.findByIdOrNull(it)
             } ?: emptyList()
         )
     }

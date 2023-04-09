@@ -10,7 +10,8 @@ data class WorkoutEventEntity(
     @Id
     val id: UUID = UUID.randomUUID(),
     val start: Instant,
-    val end: Instant,
+    val duration: Long,
     @ManyToOne
+    @JoinColumn(name = "workout_id")
     val workout: WorkoutEntity
 )
