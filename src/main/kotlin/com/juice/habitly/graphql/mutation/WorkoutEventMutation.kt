@@ -7,6 +7,7 @@ import com.netflix.graphql.dgs.DgsMutation
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.*
 
 @DgsComponent
 class WorkoutEventMutation(
@@ -15,7 +16,7 @@ class WorkoutEventMutation(
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     @DgsMutation
-    fun removeWorkoutEvent(workoutEventId: String): Boolean {
+    fun removeWorkoutEvent(workoutEventId: UUID): Boolean {
         logger.info("Deleting workoutEvent $workoutEventId")
 
         workoutEventRepository.deleteById(workoutEventId)

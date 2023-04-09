@@ -8,6 +8,7 @@ import com.netflix.dgs.codegen.generated.types.WorkoutHistoryResponse
 import com.netflix.graphql.dgs.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
+import java.util.*
 
 @DgsComponent
 class WorkoutEventQuery {
@@ -26,7 +27,7 @@ class WorkoutEventQuery {
     }
 
     @DgsQuery
-    fun workoutEvent(id: String): WorkoutEventEntity? {
+    fun workoutEvent(id: UUID): WorkoutEventEntity? {
         return workoutEventRepository.findByIdOrNull(id)
     }
 }

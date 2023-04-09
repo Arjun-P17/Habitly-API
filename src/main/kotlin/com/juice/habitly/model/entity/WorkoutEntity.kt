@@ -22,4 +22,3 @@ data class WorkoutEntity(
     )
     val exercises: List<ExerciseEntity>
 )
-

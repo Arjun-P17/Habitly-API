@@ -13,4 +13,3 @@ data class ExerciseEntity(
     val reps: Int,
     val sets: Int
 )
-

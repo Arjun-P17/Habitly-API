@@ -5,19 +5,21 @@ scalar Instant
 
 type Query {
     workouts(input: PageInfoInput): WorkoutsResponse
-    workout(id: String): Workout
+    workout(id: UUID): Workout
     workoutHistory(input: PageInfoInput): WorkoutHistoryResponse
-    workoutEvent(id: String): WorkoutEvent
+    workoutEvent(id: UUID): WorkoutEvent
+    exercises(input: PageInfoInput): ExercisesResponse
+    exercise(id: UUID): Exercise
 }
 
 type Mutation {
-    upsertWorkout(input: workoutInput): Workout
+    upsertWorkout(input: WorkoutInput): Workout
     removeWorkout(workoutId: String!): Boolean
 
-    upsertWorkoutEvent(input: workoutEventInput): WorkoutEvent
+    upsertWorkoutEvent(input: WorkoutEventInput): WorkoutEvent
     removeWorkoutEvent(workoutEventId: String!): Boolean
 
-    upsertExercise(input: exerciseInput): Exercise
+    upsertExercise(input: ExerciseInput): Exercise
     removeExercise(exerciseId: String!): Boolean
 }
 
@@ -44,7 +46,7 @@ type Exercise {
     reps: Int!
 }
 
-input exerciseInput {
+input ExerciseInput {
     id: UUID
     name: String!
     description: String
@@ -59,7 +61,7 @@ type WorkoutEvent {
     workout: Workout!
 }
 
-input workoutInput {
+input WorkoutInput {
     id: UUID
     name: String!
     description: String
@@ -68,7 +70,7 @@ input workoutInput {
     exercises: [UUID!]
 }
 
-input workoutEventInput {
+input WorkoutEventInput {
     id: UUID
     workoutId: UUID!
     start: Long!
@@ -88,9 +90,13 @@ type PageInfo {
 }
 
 type WorkoutsResponse {
-    workouts: [Workout!]
+    workouts: [Workout!]!
 }
 
 type WorkoutHistoryResponse {
-    workoutHistory: [WorkoutEvent!]
+    workoutHistory: [WorkoutEvent!]!
+}
+
+type ExercisesResponse {
+    exercises: [Exercise!]!
 }
