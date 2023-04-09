@@ -2,7 +2,15 @@ server:
   port: 9000
 
 spring:
-  data:
-    mongodb:
-      database: habitly
-      port: 27017
+  datasource:
+    url: jdbc:postgresql://localhost:5432/habitly
+    username: habitly
+    password: postgres
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect

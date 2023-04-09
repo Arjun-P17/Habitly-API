@@ -1,8 +1,8 @@
 package com.juice.habitly.graphql.query
 
-import com.juice.habitly.entity.Workout
-import com.juice.habitly.entity.toDgsWorkout
-import com.juice.habitly.repository.workoutRepository.WorkoutRepository
+import com.juice.habitly.model.entity.WorkoutEntity
+import com.juice.habitly.mappers.toGraphQL
+import com.juice.habitly.repository.WorkoutRepository
 import com.netflix.dgs.codegen.generated.types.PageInfoInput
 import com.netflix.dgs.codegen.generated.types.WorkoutsResponse
 import com.netflix.graphql.dgs.*
@@ -22,13 +22,13 @@ class WorkoutQuery {
         val workouts = workoutRepository.findAll()
         return WorkoutsResponse(
             workouts = workouts.map {
-                it.toDgsWorkout()
+                it.toGraphQL()
             }
         )
     }
 
     @DgsQuery
-    fun workout(id: String): Workout? {
+    fun workout(id: String): WorkoutEntity? {
         return workoutRepository.findByIdOrNull(id)
     }
 }

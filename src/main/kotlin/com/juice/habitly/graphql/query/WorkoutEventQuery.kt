@@ -1,8 +1,7 @@
 package com.juice.habitly.graphql.query
 
-import com.juice.habitly.entity.WorkoutEvent
-import com.juice.habitly.entity.toDgsWorkout
-import com.juice.habitly.entity.toDgsWorkoutEvent
+import com.juice.habitly.model.entity.WorkoutEventEntity
+import com.juice.habitly.mappers.toGraphQL
 import com.juice.habitly.repository.WorkoutEventRepository
 import com.netflix.dgs.codegen.generated.types.PageInfoInput
 import com.netflix.dgs.codegen.generated.types.WorkoutHistoryResponse
@@ -21,13 +20,13 @@ class WorkoutEventQuery {
     fun workoutHistory(input: PageInfoInput): WorkoutHistoryResponse {
         return WorkoutHistoryResponse(
             workoutHistory = workoutEventRepository.findAll().map {
-                it.toDgsWorkoutEvent()
+                it.toGraphQL()
             }
         )
     }
 
     @DgsQuery
-    fun workoutEvent(id: String): WorkoutEvent? {
+    fun workoutEvent(id: String): WorkoutEventEntity? {
         return workoutEventRepository.findByIdOrNull(id)
     }
 }

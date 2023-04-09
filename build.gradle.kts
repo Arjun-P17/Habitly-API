@@ -23,16 +23,24 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	testImplementation("org.jetbrains.kotlin:kotlin-test")
+
+	implementation(platform("org.springframework.boot:spring-boot-dependencies:2.6.3"))
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	runtimeOnly("org.postgresql:postgresql")
+
 	implementation("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter:5.1.1")
 	implementation("com.netflix.graphql.dgs:graphql-dgs-extended-scalars:5.1.1")
+
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<KotlinCompile> {
@@ -49,6 +57,6 @@ tasks.withType<Test> {
 tasks.generateJava {
 	generateClient = true
 	typeMapping = mutableMapOf(
-		"Long" to "java.lang.Long"
+		"UUID" to "java.util.UUID"
 	)
 }

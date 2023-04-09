@@ -1,5 +1,9 @@
+scalar UUID
+scalar Long
+scalar Instant
+
+
 type Query {
-    drinks: [DrinkEvent]
     workouts(input: PageInfoInput): WorkoutsResponse
     workout(id: String): Workout
     workoutHistory(input: PageInfoInput): WorkoutHistoryResponse
@@ -7,98 +11,68 @@ type Query {
 }
 
 type Mutation {
-    drink(input: DrinkEventInput!): DrinkEvent
-
-    addWorkout(input: addWorkoutInput): Workout
-    updateWorkout(input: updateWorkoutInput): Workout
+    upsertWorkout(input: workoutInput): Workout
     removeWorkout(workoutId: String!): Boolean
 
-    addWorkoutEvent(input: addWorkoutEventInput): WorkoutEvent
-    updateWorkoutEvent(input: updateWorkoutEventInput): WorkoutEvent
+    upsertWorkoutEvent(input: workoutEventInput): WorkoutEvent
     removeWorkoutEvent(workoutEventId: String!): Boolean
-}
 
-type DrinkEvent {
-    id: String!
-    date: Long!
-    type: DrinkType!
-    amount: Int!
-}
-
-input DrinkEventInput {
-    date: Long!
-    type: DrinkType!
-    amount: Int!
-}
-
-enum DrinkType {
-    WATER
-    TEA
-    COFFEE
-    JUICE
-    SOFT_DRINK
-    MILK
-    OTHER
+    upsertExercise(input: exerciseInput): Exercise
+    removeExercise(exerciseId: String!): Boolean
 }
 
 type Workout {
-    id: String!
+    id: UUID!
     name: String!
+    description: String
     type: WorkoutType!
-    duration: Int!
-    exercises: [Exercise]!
+    duration: Long!
+    exercises: [Exercise!]!
 }
 
 enum WorkoutType {
     CARDIO
     WEIGHTS
+    STRETCH
 }
 
 type Exercise {
+    id: UUID!
     name: String!
+    description: String
     sets: Int!
     reps: Int!
 }
 
-input ExerciseInput {
+input exerciseInput {
+    id: UUID
     name: String!
+    description: String
     sets: Int!
     reps: Int!
 }
 
 type WorkoutEvent {
-    id: String!
-    start: Long!
-    end: Long!
+    id: UUID!
+    start: Instant!
+    end: Instant!
     workout: Workout!
 }
 
-input addWorkoutInput {
+input workoutInput {
+    id: UUID
     name: String!
+    description: String
     type: WorkoutType!
-    duration: Int!
-    exercises: [ExerciseInput!]!
+    duration: Long!
+    exercises: [UUID!]
 }
 
-input updateWorkoutInput {
-    id: String!
-    name: String
-    type: WorkoutType
-    duration: Int
-    exercises: [ExerciseInput!]
-}
-
-input addWorkoutEventInput {
-    workoutId: String!
+input workoutEventInput {
+    id: UUID
+    workoutId: UUID!
     start: Long!
     end: Long!
-}
-
-input updateWorkoutEventInput {
-    id: String!
-    workoutId: String
-    start: Long
-    end: Long
 }
 
 input PageInfoInput {
@@ -120,5 +94,3 @@ type WorkoutsResponse {
 type WorkoutHistoryResponse {
     workoutHistory: [WorkoutEvent!]
 }
-
-scalar Long
